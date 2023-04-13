@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.24.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.6.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="vis"></div>
+  <!-- <button id="btnDownload" onclick="downloadChart()">ButtonDownload</button>
+   -->
+  <button onclick="vegaDownloadChartImage(vis, 'downloadData')">Download PNG file</button>
+  
+  <script>
+
+    function vegaDownloadChartImage(vegaView, downloadFileName) {
+      console.log(vegaView);
+      const a = document.createElement("a");
+      const myCanvas = document.querySelector("vis");
+      
+      var canvas = document.getElementById('vis').querySelector('canvas');
+      var dataURL = canvas.toDataURL();
+      console.log(dataURL);
+
+      /**@description: for downloading png */
+
+      a.href = canvas.toDataURL();
+      a.download = "canvas-image.jpg";
+      a.click();
+
+      /**@description: for downloading pdf*/
+
+      // var doc = new jsPDF();
+      // doc.addImage(dataURL, 10, 10);
+      // doc.save("sample.pdf");
+
+    }
+
+
+    const spec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "A simple bar chart with embedded data.",
+      "data": {
+        "values": [
+          { "a": "A", "b": 28 },
+          { "a": "B", "b": 55 },
+          { "a": "C", "b": 43 },
+          { "a": "D", "b": 91 },
+          { "a": "E", "b": 81 },
+          { "a": "F", "b": 53 },
+          { "a": "G", "b": 19 },
+          { "a": "H", "b": 87 },
+          { "a": "I", "b": 52 }
+        ]
+      },
+      "mark": "bar",
+      "encoding": {
+        "x": { "field": "a", "type": "nominal", "axis": { "labelAngle": 0 } },
+        "y": { "field": "b", "type": "quantitative" }
+      },
+      "config": {}
+    };
+    vegaEmbed("#vis", spec, { mode: "vega-lite" }).then(console.log).catch(console.warn);
+  </script>
+</body>
+
+</html>
